@@ -1,7 +1,6 @@
 {
   "name": "cigarette-tracker",
   "version": "0.1.0",
-  "homepage": "https://ygvi9fg.github.io/cigarette-tracker",
   "private": true,
   "dependencies": {
     "@testing-library/dom": "^10.4.1",
