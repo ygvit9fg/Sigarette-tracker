@@ -1,44 +1,31 @@
-// api/insult.js
-import axios from "axios";
-
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Метод не разрешён" });
-  }
-
-  const { count } = req.body;
-
   try {
-    const response = await axios.post(
-      "https://api.openai.com/v1/chat/completions",
-      {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
         model: "gpt-4o-mini",
         messages: [
           {
-            role: "system",
-            content:
-              "Ты грубый, саркастичный ассистент. Отвечай максимально колко и агрессивно.Уложись в 70 слов.",
-          },
-          {
             role: "user",
-            content: `Пользователь выкурил ${count} сигарет. Напиши оскорбительный комментарий.`,
+            content:
+              "Скажи максимально грубо, что человек зря курит и пусть продолжает ускорять свою смерть и быть слабаком.",
           },
         ],
-        max_tokens: 80,
+        max_tokens: 60,
         temperature: 0.9,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-        },
-      }
-    );
+      }),
+    });
 
-    const insult = response.data.choices[0].message.content.trim();
+    const data = await response.json();
+    const insult = data.choices?.[0]?.message?.content || "Ошибка генерации";
+
     res.status(200).json({ insult });
-  } catch (err) {
-    console.error(err.response?.data || err.message);
-    res.status(500).json({ insult: "Ошибка генерации, но куришь ты всё равно…" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ insult: "Ошибка генерации" });
   }
 }

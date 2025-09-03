@@ -1,20 +1,16 @@
-
-export async function getInsult(count) {
+export async function getInsult() {
   try {
-    const response = await fetch("/api/insult", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ count }),
-    });
-
+    const response = await fetch("/api/insult");
+    if (!response.ok) {
+      throw new Error("Ошибка ответа сервера");
+    }
     const data = await response.json();
     return data.insult;
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error);
     return "Ошибка генерации, но куришь ты всё равно…";
   }
 }
+
 
 
