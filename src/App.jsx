@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { getInsult } from "./api";
 
+
 function App() {
   const [cigarettes, setCigarettes] = useState(() => {
     return Number(localStorage.getItem("cigarettes")) || 0;
