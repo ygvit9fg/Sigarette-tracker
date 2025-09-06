@@ -11,8 +11,7 @@
     }
   ],
   "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1" },
-    { "src": "/(.*)", "dest": "/cigarette-tracker/$1" }
+    { "src": "/api/(.*)", "dest": "api/$1.js" },
+    { "src": "/(.*)", "dest": "cigarette-tracker/$1" }
   ]
 }
-
